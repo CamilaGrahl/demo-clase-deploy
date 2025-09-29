@@ -164,7 +164,6 @@ export class Dashboard {
       // Load dashboard summary
       const dashboardData = await reportsAPI.getDashboardSummary()
       this.updateStats(dashboardData)
-      console.log(dashboardData)
       // Load products
       const products = await productsAPI.getAll()
       this.updateProductsTable(products.results || products)
