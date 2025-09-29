@@ -151,7 +151,7 @@ export class Dashboard {
 
   attachEventListeners() {
     const logoutBtn = this.container.querySelector('#logoutBtn')
-    
+
     logoutBtn.addEventListener('click', () => {
       if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
         this.logout()
@@ -164,7 +164,7 @@ export class Dashboard {
       // Load dashboard summary
       const dashboardData = await reportsAPI.getDashboardSummary()
       this.updateStats(dashboardData)
-
+      console.log(dashboardData)
       // Load products
       const products = await productsAPI.getAll()
       this.updateProductsTable(products.results || products)
@@ -182,15 +182,15 @@ export class Dashboard {
     const lowStockEl = this.container.querySelector('#lowStock')
     const monthlySalesEl = this.container.querySelector('#monthlySales')
 
-    if (totalProductsEl) totalProductsEl.textContent = data.total_products || '-'
-    if (monthlyOrdersEl) monthlyOrdersEl.textContent = data.monthly_orders || '-'
-    if (lowStockEl) lowStockEl.textContent = data.low_stock_products || '-'
-    if (monthlySalesEl) monthlySalesEl.textContent = data.monthly_sales || '-'
+    if (totalProductsEl) totalProductsEl.textContent = data.inventory.total_products || '-'
+    if (monthlyOrdersEl) monthlyOrdersEl.textContent = data.purchases.this_month_purchases || '-'
+    if (lowStockEl) lowStockEl.textContent = data.inventory.low_stock_products || '-'
+    if (monthlySalesEl) monthlySalesEl.textContent = data.sales.this_month_sales || '-'
   }
 
   updateProductsTable(products) {
     const tbody = this.container.querySelector('#productsTableBody')
-    
+
     if (!products || products.length === 0) {
       tbody.innerHTML = `
         <tr>
@@ -209,16 +209,15 @@ export class Dashboard {
           ${product.category?.name || 'Sin categoría'}
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-          <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-            product.stock_quantity <= product.min_stock_level 
-              ? 'bg-red-100 text-red-800' 
-              : 'bg-green-100 text-green-800'
-          }">
+          <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${product.stock_quantity <= product.min_stock_level
+        ? 'bg-red-100 text-red-800'
+        : 'bg-green-100 text-green-800'
+      }">
             ${product.stock_quantity}
           </span>
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-          $${product.sale_price || '0.00'}
+          $${product.price || '0.00'}
         </td>
       </tr>
     `).join('')
@@ -230,7 +229,7 @@ export class Dashboard {
     errorDiv.className = 'fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50'
     errorDiv.textContent = message
     document.body.appendChild(errorDiv)
-    
+
     setTimeout(() => {
       document.body.removeChild(errorDiv)
     }, 5000)

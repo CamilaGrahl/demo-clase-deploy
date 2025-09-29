@@ -8,9 +8,9 @@ export const API_CONFIG = {
     CATEGORIES: '/inventory/categories/',
     CUSTOMERS: '/sales/customers/',
     ORDERS: '/sales/orders/',
-    DASHBOARD: '/reports/dashboard_summary/',
-    SALES_REPORT: '/reports/sales_report/',
-    INVENTORY_REPORT: '/reports/inventory_report/'
+    DASHBOARD: '/reports/reports/dashboard_summary/',
+    SALES_REPORT: '/reports/reports/sales_report/',
+    INVENTORY_REPORT: '/reports/reports/inventory_report/'
   }
 }
 
@@ -21,7 +21,7 @@ export const TEST_CREDENTIALS = {
     password: 'test123456'
   },
   manager: {
-    email: 'manager@minierp.com', 
+    email: 'manager@minierp.com',
     password: 'test123456'
   },
   sales: {

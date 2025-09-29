@@ -103,10 +103,10 @@ export class Login {
       btn.addEventListener('click', (e) => {
         const role = e.target.dataset.role
         const credentials = TEST_CREDENTIALS[role]
-        
+
         const emailInput = this.container.querySelector('#email')
         const passwordInput = this.container.querySelector('#password')
-        
+
         emailInput.value = credentials.email
         passwordInput.value = credentials.password
       })
@@ -114,7 +114,7 @@ export class Login {
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault()
-      
+
       const email = form.email.value
       const password = form.password.value
 
@@ -129,20 +129,19 @@ export class Login {
         this.hideMessages()
 
         const response = await authAPI.login(email, password)
-        
         // Store token and user data
-        localStorage.setItem('token', response.access)
+        localStorage.setItem('token', response.access_token)
         localStorage.setItem('user', JSON.stringify(response.user))
-        
+
         this.showSuccess('¡Login exitoso! Redirigiendo...')
-        
+
         // Call success callback
         if (this.onLoginSuccess) {
           setTimeout(() => {
             this.onLoginSuccess(response.user)
           }, 1000)
         }
-        
+
       } catch (error) {
         console.error('Login error:', error)
         const message = error.response?.data?.detail || 'Error al iniciar sesión'
@@ -164,7 +163,7 @@ export class Login {
   showError(message) {
     const errorMessage = this.container.querySelector('#errorMessage')
     const successMessage = this.container.querySelector('#successMessage')
-    
+
     errorMessage.textContent = message
     errorMessage.classList.remove('hidden')
     successMessage.classList.add('hidden')
@@ -173,7 +172,7 @@ export class Login {
   showSuccess(message) {
     const errorMessage = this.container.querySelector('#errorMessage')
     const successMessage = this.container.querySelector('#successMessage')
-    
+
     successMessage.textContent = message
     successMessage.classList.remove('hidden')
     errorMessage.classList.add('hidden')
@@ -182,7 +181,7 @@ export class Login {
   hideMessages() {
     const errorMessage = this.container.querySelector('#errorMessage')
     const successMessage = this.container.querySelector('#successMessage')
-    
+
     errorMessage.classList.add('hidden')
     successMessage.classList.add('hidden')
   }
